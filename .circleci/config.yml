@@ -42,6 +42,7 @@ jobs:
         # Checkout code from git
         - checkout
         - restore_cache:
+            keys: [frontend-build]
         - run: 
             name: Run frontend test
             command: | 
@@ -59,15 +60,14 @@ jobs:
         - checkout
         # Restore from cache
         - restore_cache:
+            keys: [backend-build]
         # Your job code here
         - run:
             name: Run Backend test
             command: |
               cd backend
               npm install
-              npm run test
-              
-
+              npm run test           
 workflows:
   default:
     jobs:
