@@ -71,7 +71,8 @@ jobs:
               npm run test           
 
   scan-frontend:
-    docker: circleci/node:13.8.0
+    docker: 
+      image: circleci/node:13.8.0
       # Docker image here
     steps:
       # Checkout code from git
@@ -89,7 +90,8 @@ jobs:
             npm audit --audit-level=critical
 
   scan-backend:
-    docker: circleci/node:13.8.0
+    docker: 
+        image: circleci/node:13.8.0
       # Docker image here
     steps:
       # Checkout code from git
