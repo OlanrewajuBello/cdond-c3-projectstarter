@@ -103,9 +103,9 @@ jobs:
           keys: [backend-build]
       # Your job code here
       - run:
-          name: Scan Backe
+          name: Scan Backend
           command: |
-            cd backend
+            cd back
             npm install
             # npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical --force         
