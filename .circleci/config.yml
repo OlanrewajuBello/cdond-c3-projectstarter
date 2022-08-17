@@ -122,8 +122,8 @@ jobs:
                   "type": "section",
                   "fields": [
                       {
-                        "type": "plan_text",
-                        "text": "*This is a text notification*",
+                        "type": "plain_text",
+                        "text": "*This is a CircleCI notification*",
                         "emoji": true
                       }
                   ]
@@ -147,5 +147,4 @@ workflows:
   send-notification:
     jobs:
       - notify:
-          context: slack-secrets
-          
+          context: SLACK_ACCESS_TOKEN
