@@ -133,6 +133,7 @@ jobs:
           event: always
 workflows:
   default:
+
     jobs:
       - build-frontend
       - build-backend
@@ -144,7 +145,8 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
+  
   send-notification:
     jobs:
       - notify:
-          context: SLACK_ACCESS_TOKEN
+          context: slack-secrets
