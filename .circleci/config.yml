@@ -133,17 +133,17 @@ jobs:
           event: always
       - slack/notify:
           event: fail
-            - build-backend: fail
-            - build-frontend: fail
-            - test-frontend: fail
-            - test-backend: fail
+            - build-backend
+            - build-frontend
+            - test-frontend
+            - test-backend
           template: basic_fail_1
       - slack/notify:
           event: pass
-            - build-backend: pass
-            - build-frontend: pass
-            - test-frontend: pass
-            - test-backend: pass         
+            - build-backend
+            - build-frontend
+            - test-frontend
+            - test-backend      
           template: success_tagged_deploy_1
 workflows:
   default:
