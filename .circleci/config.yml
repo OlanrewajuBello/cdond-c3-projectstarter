@@ -132,14 +132,14 @@ jobs:
             }
           event: always
       - slack/notify:
-          event: 
+          event: fail
             - build-backend: fail
             - build-frontend: fail
             - test-frontend: fail
             - test-backend: fail
           template: basic_fail_1
       - slack/notify:
-          event: 
+          event: pass
             - build-backend: pass
             - build-frontend: pass
             - test-frontend: pass
