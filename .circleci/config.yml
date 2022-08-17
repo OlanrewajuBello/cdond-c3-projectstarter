@@ -103,7 +103,7 @@ jobs:
           keys: [backend-build]
       # Your job code here
       - run:
-          name: Scan Backend
+          name: Scan Backe
           command: |
             cd backend
             npm install
@@ -117,7 +117,7 @@ jobs:
       - slack/notify:
           event: pass    
           template: basic_success_1
-          
+
       - slack/notify:
           event: fail
           template: basic_fail_1
