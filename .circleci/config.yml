@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  slack: circleci/slack@4.10.1
 
             
 jobs:
@@ -107,7 +109,42 @@ jobs:
             npm install
             # npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical --force         
-
+  
+  notify:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "block":[
+                {
+                  "type": "section",
+                  "fields": [
+                      {
+                        "type": "plain_text",
+                        "text": "This is a CircleCI notification",
+                        "emoji": true
+                      }
+                  ]
+                }
+              ]
+            }
+          event: always
+      - slack/notify:
+          event: 
+            - build-backend: fail
+            - build-frontend: fail
+            - test-frontend: fail
+            - test-backend: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: 
+            - build-backend: pass
+            - build-frontend: pass
+            - test-frontend: pass
+            - test-backend: pass         
+          template: success_tagged_deploy_1
 workflows:
   default:
 
@@ -122,3 +159,8 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
+  
+  send-notification:
+    jobs:
+      - notify:
+          context: slack-secrets
