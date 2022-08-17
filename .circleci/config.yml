@@ -105,7 +105,7 @@ jobs:
       - run:
           name: Scan Backend
           command: |
-            cd backe
+            cd backend
             npm install
             # npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical --force         
@@ -123,7 +123,7 @@ jobs:
                   "fields": [
                       {
                         "type": "plain_text",
-                        "text": "*This is a CircleCI notification*",
+                        "text": "This is a CircleCI notification",
                         "emoji": true
                       }
                   ]
