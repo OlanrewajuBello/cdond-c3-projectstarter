@@ -137,7 +137,7 @@ workflows:
       - scan-frontend:
           requires: [build-frontend]
       - notify:
-            requires:
+          requires:
             - build-frontend
             - build-backend
             - test-frontend
