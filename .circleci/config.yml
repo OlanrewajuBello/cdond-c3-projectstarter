@@ -137,7 +137,6 @@ workflows:
       - scan-frontend:
           requires: [build-frontend]
       - notify:
-          context: slack-secrets
           steps:
           - slack/notify:
               requires:
@@ -147,3 +146,4 @@ workflows:
               - test-backend
               - scan-frontend
               - scan-backend
+          context: slack-secrets
