@@ -138,7 +138,8 @@ workflows:
           requires: [build-frontend]
       - notify:
           context: slack-secrets
-          slack/notify:
+          steps:
+          - slack/notify:
               requires:
               - build-frontend
               - build-backend
