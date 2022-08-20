@@ -12,7 +12,7 @@ commands:
         default: "on_fail"   
     steps:
       - run:
-          name: Destroy environment
+          name: destroy-environment
           when: on_fail
           command: |
             # Your code here
