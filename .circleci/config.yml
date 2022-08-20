@@ -190,11 +190,5 @@ workflows:
             branches:
               only: [test-feature-branch]
       - notify:
-          requires:
-            - build-frontend
-            - build-backend
-            - test-frontend
-            - test-backend
-            - scan-frontend
-            - scan-backend
+          requires: [build-frontend, build-backend, test-frontend, test-backend, scan-frontend, scan-backend]
           context: slack-secrets
