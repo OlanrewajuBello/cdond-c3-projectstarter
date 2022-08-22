@@ -3,6 +3,15 @@ version: 2.1
 #   slack: circleci/slack@4.10.1
 
 commands:
+  notify:
+   description: Slack notify when job passed OR failed
+     steps:
+     - slack/notify:
+         event: pass
+         template: basic_success_1
+     - slack/notify:
+         event: fail
+         template: basic_fail_1
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -21,13 +30,13 @@ commands:
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:O:7}
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:O:7}
             aws cloudformation delete-stack --stack-name udapeople-${CIRCLE_WORKFLOW_ID:0:7}            
-      - slack/notify:
-          event: pass    
-          template: basic_success_1
+      # - slack/notify:
+      #     event: pass    
+      #     template: basic_success_1
 
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
+      # - slack/notify:
+      #     event: fail
+      #     template: basic_fail_1
  
            
 jobs:
