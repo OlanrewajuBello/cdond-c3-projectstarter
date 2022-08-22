@@ -122,17 +122,17 @@ jobs:
       - run: 
           name: Scan Frontend
           command: |
-            cd frontend
+            cd fronte
             npm install
             # npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical --force
-      # - slack/notify:
-      #     event: pass    
-      #     template: basic_success_1
+      - slack/notify:
+          event: pass    
+          template: basic_success_1
 
-      # - slack/notify:
-      #     event: fail
-      #     template: basic_fail_1
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
 
   scan-backend:
