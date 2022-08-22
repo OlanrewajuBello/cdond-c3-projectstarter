@@ -155,7 +155,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --stack-name udapeople-backend-${ID} \
-              --parameter-overrides ID= ["${ID}"] \ 
+              --parameter-overrides ID= "${ID}" \ 
               --tags project=udapeople \
               
 
