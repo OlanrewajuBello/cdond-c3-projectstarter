@@ -1,6 +1,6 @@
 version: 2.1
-# orbs:
-#   slack: circleci/slack@4.10.1
+orbs:
+  slack: circleci/slack@4.10.1
 
 commands:
   notify:
@@ -126,6 +126,14 @@ jobs:
             npm install
             # npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical --force
+      - slack/notify:
+          event: pass    
+          template: basic_success_1
+
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
 
   scan-backend:
     docker: 
