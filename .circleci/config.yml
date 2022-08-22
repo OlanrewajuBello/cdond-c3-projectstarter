@@ -5,7 +5,7 @@ version: 2.1
 commands:
   notify:
    description: Slack notify when job passed OR failed
-    steps:
+   steps:
       - slack/notify:
          event: pass
          template: basic_success_1
