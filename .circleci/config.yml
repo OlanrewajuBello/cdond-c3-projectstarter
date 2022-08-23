@@ -207,7 +207,7 @@ jobs:
          fingerprints: ["ca:00:63:fc:93:29:2a:30:1b:b9:65:bc:75:1d:2b:d0"]
       # attach workspace
       - run:
-          name: Install dependencies
+          name: Install dependenciess
           command: |
             apk add --update ansible
       - run:
