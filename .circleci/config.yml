@@ -331,7 +331,9 @@ workflows:
             branches:
               only: [test-feature-branch]
       - configure-infrastructure:
-          requires: [deploy-infrastructure]              
+          requires: [deploy-infrastructure] 
+      - run-migrations:
+          requires: [configure-infrastructure]             
       # - notify:
       #     requires: [build-frontend, build-backend, test-frontend, test-backend, scan-frontend, scan-backend]
       #     context: slack-secrets
