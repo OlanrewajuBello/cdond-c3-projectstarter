@@ -291,8 +291,7 @@ jobs:
       # attach workspace
       - persist_to_workspace:
           root: ~/
-          paths:
-            - project/.circleci/ansible/inventory.txt
+          
       - run:
           name: Install dependencies
           command: |
