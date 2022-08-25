@@ -292,7 +292,7 @@ jobs:
           name: Install dependencies
           command: |
             apt-get update
-            y
+            
             
       - run:
           name: Deploy backend
