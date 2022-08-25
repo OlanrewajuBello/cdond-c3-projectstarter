@@ -206,6 +206,10 @@ jobs:
       - add_ssh_keys:
          fingerprints: ["ca:00:63:fc:93:29:2a:30:1b:b9:65:bc:75:1d:2b:d0"]
       # attach workspace
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt      
       - run:
           name: Install dependencies
           command: |
@@ -277,7 +281,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.11
+      - image: python:3.10-alpine3.16
     steps:
       # Checkout code from git
       - checkout
@@ -292,7 +296,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache ansible tar gzip npm node.js
+            apk add --update --no-cache ansible tar gzip node.js npm curl aws-cli
             
             
       - run:
