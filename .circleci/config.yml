@@ -245,16 +245,15 @@ jobs:
     docker:
       # Docker image here that supports AWS CLI
       - image: cimg/aws:2022.06
+      - user: root
     steps:
       # Checkout code from git
       - checkout
       - run:
           name: Install dependencies
           command: |
-            npm install
-            python3 -m
-            pip install -r
-            apk add --update ansible
+            apt-get update
+            apt-y install awscli
 
       - run:
           name: Get backend url
