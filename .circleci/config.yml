@@ -281,8 +281,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.10-alpine3.16
-        user: root
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -297,7 +296,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache ansible tar gzip nodejs npm curl aws-cli
+            apt-get update
+            apt -y install awscli
+          # apk add --update --no-cache ansible tar gzip nodejs npm curl aws-cli
             
             
       - run:
