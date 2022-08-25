@@ -281,7 +281,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: circleci/node:13.8.0
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       - checkout
@@ -289,16 +289,12 @@ jobs:
       - add_ssh_keys:
          fingerprints: ["ca:00:63:fc:93:29:2a:30:1b:b9:65:bc:75:1d:2b:d0"]
       # attach workspace
-      - persist_to_workspace:
-          root: ~/
-          paths: 
-            - project/.circleci/ansible/inventory.txt      
+      - attach_workspace:
+          at: ~/   
       - run:
           name: Install dependencies
           command: |
-            apt-get update
-            apt -y install awscli
-          # apk add --update --no-cache ansible tar gzip nodejs npm curl aws-cli
+            apk add --update --no-cache ansible tar gzip nodejs npm curl aws-cli
             
             
       - run:
@@ -333,7 +329,10 @@ jobs:
             ansible-playbook -i inventory.txt deploy-backend.yml
       # your code here
       # Here's where you will add some code to rollback on failure  
-
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 workflows:
   default:
 
