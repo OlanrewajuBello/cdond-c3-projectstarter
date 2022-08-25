@@ -252,9 +252,9 @@ jobs:
           name: Install dependencies
           command: |
             npm install
+            yum -y install pip 
             apk add --update ansible
-            apk add --install pip
-            apk add --update aws-cli
+
 
       - run:
           name: Get backend url
