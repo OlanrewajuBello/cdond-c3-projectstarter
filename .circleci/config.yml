@@ -292,7 +292,7 @@ jobs:
           name: Install dependencies
           command: |
             apt-get update
-            yum -y install tar gzip
+            y
             
       - run:
           name: Deploy backend
