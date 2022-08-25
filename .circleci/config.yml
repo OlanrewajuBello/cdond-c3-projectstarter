@@ -254,7 +254,6 @@ jobs:
             npm install
             apk add --update ansible
             apk add --install pip
-            apk add --update aws
             apk add --update aws-cli
 
       - run:
