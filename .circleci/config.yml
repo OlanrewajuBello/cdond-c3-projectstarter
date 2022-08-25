@@ -276,7 +276,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -292,6 +292,8 @@ jobs:
           name: Install dependencies
           command: |
             apt-get update
+            yum -y install tar gzip
+            
       - run:
           name: Deploy backend
           command: |
