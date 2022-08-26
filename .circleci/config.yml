@@ -224,6 +224,7 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail
          
       
 
@@ -253,6 +254,7 @@ jobs:
             fi
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail
 
  # Here's where you will add some code to rollback on failure      
           
@@ -293,8 +295,9 @@ jobs:
 
       - destroy-environment:
             workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - revert-migrations:
-            workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+            event: on_fail
+      # - revert-migrations:
+      #       workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
       # Here's where you will add some code to rollback on failure      
 
@@ -352,8 +355,9 @@ jobs:
 
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - revert-migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail
+      # - revert-migrations:
+      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
       # your code here
       # Here's where you will add some code to rollback on failure  
