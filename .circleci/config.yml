@@ -183,8 +183,8 @@ jobs:
           command: |
             aws ec2 describe-instances \
             --filters "Name=tag:Name, Values=backend-${CIRCLE_WORKFLOW_ID:O:7}" \
-            --query "reservations[*].Instances[*].PublicIpAddress" \
-            --output text >> .circleci/ansible/inventory.txt
+            --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+            --output text >> ~/project/.circleci/ansible/inventory.txt
             cat ~/project/.circleci/ansible/inventory.txt
 
       - persist_to_workspace:
@@ -220,13 +220,11 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-          no_output_timeout: 30m
+         
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
          
-      
-
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
@@ -357,6 +355,64 @@ jobs:
 
       # your code here
       # Here's where you will add some code to rollback on failure  
+
+  smoke-test:
+    docker:
+      # Lightweight Docker image
+      - image: python:3.10-alpine3.16 
+    steps:
+      # Checkout code from git
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update --no-cache tar gzip nodejs npm curl aws-cli
+
+      - run:
+          name: Get backend url and Backend Smoke test
+          command: |
+            expot BACKEND_IP=$(aws ec2 describe-instances \
+            --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WOEKFLOW_ID:0:7}" \
+            --output text)
+            echo ${BACKEND_IP}
+
+            export BACKEND=$(echo $BACKEND_IP | grep -o '[^ ]*$')
+
+            echp $BACKEND
+            export API_URL="http://${BACKEND}:3030"
+            echo "API_URL=${API_URL}"
+
+            echo "Sleepin for 1 minute"
+            sleep 60
+
+            if curl -v "${API_URL}/api/status" | grep "ok"
+            then
+              return 0
+            else
+              return 1
+            fi
+      - run:
+          name: Frontend smoke test.
+          command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"
+
+            echo ${URL}
+
+            if curl -s ${URL} | grep "welcome"
+            then
+              # Change this to 0 after the job fails
+              return 0
+            else
+              return 1
+            fi
+
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      -revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # Here's where you will add some code to rollback on failure  
+
 
 workflows:
   default:
