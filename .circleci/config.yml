@@ -432,7 +432,11 @@ jobs:
 
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+<<<<<<< HEAD
           event: when_fail
+=======
+          event: on_fail
+>>>>>>> e2a9ee9261bcf4f990c7911c8667eaf296da0c4a
       # -revert-migrations:
       #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       # Here's where you will add some code to rollback on failure  
