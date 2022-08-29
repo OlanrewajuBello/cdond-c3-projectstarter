@@ -6,12 +6,12 @@ orbs:
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
-      # Add parameter here
-      workflow_id:
-        type: string
-      event:
-        type: string 
+    # parameters:
+    #   # Add parameter here
+    #   workflow_id:
+    #     type: string
+    #   event:
+    #     type: string 
     steps:
       - run:
           name: Destroy environments
@@ -25,8 +25,8 @@ commands:
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
-    parameters:
-      # Add parameter here     
+    # parameters:
+    #   # Add parameter here     
     steps:
       - run:
           name: Revert migrations when successful only
