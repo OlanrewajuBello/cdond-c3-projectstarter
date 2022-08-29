@@ -6,12 +6,12 @@ orbs:
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    # parameters:
-    #   # Add parameter here
-    #   workflow_id:
-    #     type: string
-    #   event:
-    #     type: string 
+    parameters:
+    #Add parameter here
+      workflow_id:
+        type: string
+      event:
+        type: string 
     steps:
       - run:
           name: Destroy environments
@@ -223,7 +223,10 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail    
+      # - destroy-environment
       #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       #     event: on_fail
       # Here's where you will add some code to rollback on failure      
@@ -253,7 +256,10 @@ jobs:
             cd .circleci/ansible
             ls -al
             ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail
+      # - destroy-environment
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
       #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
@@ -266,8 +272,8 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # - restore_cache:
-      #     keys: [backend-build]
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Install dependencies
           command: |
@@ -303,6 +309,9 @@ jobs:
             else
                 curl --insecure -d "failure" https://kvdb.io/KYhyB7HfeoeV1Y4BLM9nKN/migration_$\{CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail            
       - destroy-environment
 
  # Here's where you will add some code to rollback on failure      
@@ -341,8 +350,13 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      - destroy-environment
-      - revert-migrations
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
+      # - destroy-environment
+      # - revert-migrations
       #       workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       #       event: on_fail
       # - revert-migrations:
@@ -372,6 +386,7 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            pwd
             cd backend
             
             touch .env
@@ -401,12 +416,11 @@ jobs:
             echo "Contents of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-      - destroy-environment
-      - revert-migrations
-      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      #     event: on_fail
-      # - revert-migrations:
-      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
       # your code here
       # Here's where you will add some code to rollback on failure  
@@ -458,9 +472,13 @@ jobs:
             else
               return 1
             fi
-    
-     - destroy-environment
-     - revert-migrations
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}    
+    #  - destroy-environment
+    #  - revert-migrations
 
 workflows:
   default:
