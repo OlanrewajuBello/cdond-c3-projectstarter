@@ -6,12 +6,12 @@ orbs:
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
+    # parameters:
     #Add parameter here
-      workflow_id:
-        type: string
-      event:
-        type: string 
+      # workflow_id:
+      #   type: string
+      # event:
+      #   type: string 
     steps:
       - run:
           name: Destroy environments
@@ -226,7 +226,7 @@ jobs:
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           event: on_fail    
-      # - destroy-environment
+      - destroy-environment
       #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       #     event: on_fail
       # Here's where you will add some code to rollback on failure      
