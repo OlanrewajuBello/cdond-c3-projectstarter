@@ -185,13 +185,13 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - run: yum -y install tar gzip
+      - run: yum install tar gzip -y
       - run:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/backend.yml \
-            --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+            --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} \
             --tags project=udapeople
               
@@ -201,28 +201,24 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file .circleci/files/frontend.yml \
-            --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
+            --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} \
             --tags project=udapeople 
              
 
       - run:
           name: Add back-end ip to ansible inventory
-          command: |
-            echo "[web]" > .circleci/ansible/inventory.txt
-            BACKEND_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+          command: |                        
+              aws ec2 describe-instances \
+              --query "Reservations[*].Instances[*].[PublicIpAddress]" \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --output text)
-            echo ${BACKEND_IP}
-            curl --insecure -d "${BACKEND_IP}" https://kvdb.io/KYhyB7HfeoeV1Y4BLM9nKN/UdaPeople-${CIRCLE_WORKFLOW_ID:0:7} -d '1'
-       
-            echo ${BACKEND_IP} >> .circleci/ansible/inventory.txt
+              --output text >> ~/project/.circleci/ansible/inventory.txt
+              cat ~/project/.circleci/ansible/inventory.txt
 
       - persist_to_workspace:
-          root: .circleci/ansible
+          root: ~/
           paths:
-            - inventory.txt
+            - project/.circleci/ansible/inventory.txt
       - destroy-environment
       # Here's where you will add some code to rollback on failure      
 
@@ -238,9 +234,8 @@ jobs:
          fingerprints: ["ca:00:63:fc:93:29:2a:30:1b:b9:65:bc:75:1d:2b:d0"]
       # attach workspace
       - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible     
+          at: ~/
+   
       - run:
           name: Install dependencies
           command: |
@@ -248,6 +243,7 @@ jobs:
       - run:
           name: Configure server
           command: |
+            pwd
             cd .circleci/ansible
             ls -al
             ansible-playbook -i inventory.txt configure-server.yml
@@ -269,7 +265,6 @@ jobs:
           command: |
             cd backend
             sudo npm install -g npm
-            npm install
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
@@ -287,26 +282,30 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: circleci/node:13.8.0
-        user: root
+      - image: python:3.10-alpine3.16
     steps:
       # Checkout code from git
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
-            apt-get update
-            apt -y install awscli
-
+            apk add --update --no-cache tar
+            apk add --update --no-cache gzip
+            apk add --update --no-cache nodejs
+            apk add --update --no-cache npm
+            apk add --update --no-cache aws-cli
+            apk add --update --no-cache curl
       - run:
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
             --query "Reservations[*].Instance[*].[PublicIpAddress]" \ 
-            --filters "Name=tag:Name, Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --output text)
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "API_URL: = ${API_URL}"
+            echo "API_URL=${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
       - run:
@@ -344,15 +343,16 @@ jobs:
             
       - run:
           name: Deploy backend
-          command: |
+          comman: |
+            pwd
             cd backend
             
             touch .env
-            echo ENVIROMENT=development > “.env”
+            echo ENVIROMENT=production > “.env”
             echo TYPEORM_CONNECTION=postgres >> “.env”
-            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> “.env”
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> “.env”
             echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> “.env”
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> “.env”
             echo NODE_ENV=production >> ".env"
             echo TYPEORM_HOST=$TYPEORM_HOST >> “.env”
             echo TYPEORM_PORT=$TYPEORM_PORT >> “.env”
@@ -398,7 +398,7 @@ jobs:
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
             --query "Reservations[*].Instances[*].[PublicIpAddress]" \
-            --filters "Name=tag:Name,Values=backend-${CIRCLE_WOEKFLOW_ID:0:7}" \
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --output text)
             echo ${BACKEND_IP}
 
@@ -408,7 +408,7 @@ jobs:
             export API_URL="http://${BACKEND}:3030"
             echo "API_URL=${API_URL}"
 
-            echo "Sleepin for 1 minute"
+            echo "Sleeping for 1 minute"
             sleep 60
 
             if curl -v "${API_URL}/api/status" | grep "ok"
@@ -424,9 +424,8 @@ jobs:
 
             echo ${URL}
 
-            if curl -s ${URL} | grep "welcome"
+            if curl -s ${URL} | grep "Welcome"
             then
-              # Change this to 0 after the job fails
               return 0
             else
               return 1
