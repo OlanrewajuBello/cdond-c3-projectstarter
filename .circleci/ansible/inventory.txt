@@ -1,5 +1,0 @@
-[web]
-<<<<<<< HEAD
-=======
-ec2-3-84-190-238.compute-1.amazonaws.com
->>>>>>> f078e45700543d9cac1ebe226f41bb693cff991e
