@@ -220,9 +220,9 @@ jobs:
             echo ${BACKEND_IP} >> .circleci/ansible/inventory.txt
 
       - persist_to_workspace:
-          root: ~/
+          root: .circleci/ansible
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - inventory.txt
       - destroy-environment
       # Here's where you will add some code to rollback on failure      
 
@@ -240,7 +240,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt      
+            - project/.circleci/ansible     
       - run:
           name: Install dependencies
           command: |
