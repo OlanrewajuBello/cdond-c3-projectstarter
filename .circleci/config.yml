@@ -278,7 +278,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            sudo npm install -g npm
+            npm install
 
             echo ENVIROMENT=development > ".env"
             echo TYPEORM_CONNECTION=postgres >> ".env"
