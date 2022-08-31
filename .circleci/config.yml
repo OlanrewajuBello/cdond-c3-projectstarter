@@ -229,7 +229,9 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.10-alpine3.16
+      # - image: python:3.10-alpine3.16
+      - image: python:3.7-alpine3.11
+
     steps:
       # Checkout code from git
       - checkout
@@ -239,11 +241,16 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: /tmp/.circleci/ansible
-   
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache ansible tar gzip aws-cli openssh
+            pip install awscli
+            apk add --update ansible
+   
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apk add --update --no-cache ansible tar gzip aws-cli openssh
       - run:
           name: Configure server
           command: |
