@@ -367,9 +367,9 @@ jobs:
             npm run build
             cd ..
             pwd
+            ls -al
             tar -C backend -czvf artifact.tar.gz .
-            npm audit fix --force
-            
+                        
             cd .circleci/ansible
 
             echo "Contents of the inventory.txt file is -------"
