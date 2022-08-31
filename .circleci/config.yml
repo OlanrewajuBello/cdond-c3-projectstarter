@@ -302,9 +302,9 @@ jobs:
             if grep -q "has been executed successfully." $(MIGRATIONS_OUTPUT)
            # ~/project/backend/migrations_dump.txt
             then
-                curl --insecure "success" https://kvdb.io/KYhyB7HfeoeV1Y4BLM9nKN/migration_$\{CIRCLE_WORKFLOW_ID:0:7}-DBMigrationsStatus
+                curl --insecure "success" https://kvdb.io/KYhyB7HfeoeV1Y4BLM9nKN/migration_$\{CIRCLE_WORKFLOW_ID:0:7} -d '1'
             else
-                curl --insecure "failure" https://kvdb.io/KYhyB7HfeoeV1Y4BLM9nKN/migration_$\{CIRCLE_WORKFLOW_ID:0:7}-DBMigrationsStatus
+                curl --insecure "failure" https://kvdb.io/KYhyB7HfeoeV1Y4BLM9nKN/migration_$\{CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
       - destroy-environment
 
