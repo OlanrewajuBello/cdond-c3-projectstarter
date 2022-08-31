@@ -220,7 +220,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      # - destroy-environment
+      - destroy-environment
       # Here's where you will add some code to rollback on failure      
 
   configure-infrastructure:
@@ -249,7 +249,7 @@ jobs:
             ls -al
             ansible-playbook -i inventory.txt configure-server.yml
           no_output_timeout: 10m
-      # - destroy-environment
+      - destroy-environment
       # Here's where you will add some code to rollback on failure         
   
   run-migrations:
@@ -275,7 +275,7 @@ jobs:
             then
                 curl --insecure https://kvdb.io/KYhyB7HfeoeV1Y4BLM9nKN/migration_$\{CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
-      # - destroy-environment
+      - destroy-environment
 
  # Here's where you will add some code to rollback on failure      
           
@@ -318,8 +318,8 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
-      # - destroy-environment
-      # - revert-migrations
+      - destroy-environment
+      - revert-migrations
 
       # Here's where you will add some code to rollback on failure      
 
@@ -376,8 +376,8 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
 
-      # - destroy-environment
-      # - revert-migrations
+      - destroy-environment
+      - revert-migrations
       #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
       # your code here
@@ -414,7 +414,7 @@ jobs:
 
             if curl -v "${API_URL}/api/status" | grep "ok"
             then
-              return 0
+              return 1
             else
               return 1
             fi
@@ -432,8 +432,8 @@ jobs:
               return 1
             fi
 
-      # - destroy-environment
-      # - revert-migrations
+      - destroy-environment
+      - revert-migrations
       #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       # Here's where you will add some code to rollback on failure  
 
