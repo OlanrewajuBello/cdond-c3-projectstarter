@@ -396,7 +396,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            export BACKEND_IP=$(curl --insecure https://kvdb.io/2nRvBtd3g1UAAyp4Enr5ZU/UdaPeople-${CIRCLE_WORKFLOW_ID:0:7}-BackendIP)
+            export BACKEND_IP=$(curl --insecure https://kvdb.io/KYhyB7HfeoeV1Y4BLM9nKN/UdaPeople-${CIRCLE_WORKFLOW_ID:0:7}-BackendIP)
             echo BACKEND_URL: http://${BACKEND_IP}:3030/api/status
             if curl -s http://${BACKEND_IP}:3030/api/status | grep "ok"
             then
