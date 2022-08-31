@@ -48,16 +48,4 @@
     npm install
     npm run build
     pm2 stop all
-    pme start npm -- start
-
-# - name: "unarchive backend files"
-#   unarchive:
-#     src: api.tar.gz
-#     dest: /home/ubuntu/
-
-# - name: "executing node"
-#   shell: |
-#     cd /home/ubuntu/backend/dist
-#     pm2 stop default
-#     pm2 start npm --name 'udapeople' -- start
-#     pm2 ls
+    pm2 start npm -- start
