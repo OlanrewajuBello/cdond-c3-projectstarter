@@ -394,7 +394,7 @@ jobs:
       # Lightweight Docker image
       - image: python:3.10-alpine3.16 
     steps:
-      - checkout"{{ lookup('env', 'TYPEORM_PORT')}}"
+      - checkout
       - run:
           name: Install dependencies
           command: |
