@@ -412,7 +412,7 @@ jobs:
             export BACKEND=$(echo $BACKEND_IP | grep -o '[^ ]*$')
 
             echo $BACKEND
-            export API_URL="http://$BACKEND:3030"
+            export API_URL="http://${BACKEND}:3030"
             echo "API_URL=${API_URL}"
 
             echo "Sleeping for 1 minute"
@@ -439,8 +439,8 @@ jobs:
               return 1
             fi
 
-      # - destroy-environment
-      # - revert-migrations
+      - destroy-environment
+      - revert-migrations
       #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       # Here's where you will add some code to rollback on failure  
 
