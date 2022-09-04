@@ -468,7 +468,7 @@ jobs:
           root: ~/
           paths:
             - project/OldWorkflowID.txt
-      -run:
+      - run:
          name: Update Cloudfront Distribution
          command: |
           aws cloudformation deploy \
