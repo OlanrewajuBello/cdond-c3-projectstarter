@@ -355,17 +355,17 @@ jobs:
             cd backend
             
             touch .env
-            echo ENVIROMENT="production" > “.env”
-            echo TYPEORM_CONNECTION="postgres" >> “.env”
-            echo TYPEORM_ENTITIES="/home/ubuntu/backend_app_dir/src/modules/domain/**/*.entity{.ts,.js}" >> “.env”
-            echo TYPEORM_MIGRATIONS="/home/ubuntu/backend_app_dir/dist/migrations/*{.ts,.js}" >> “.env”
-            echo TYPEORM_MIGRATIONS_DIR="/home/ubuntu/app/src/migrations" >> “.env”
+            echo ENVIROMENT="production" > ".env"
+            echo TYPEORM_CONNECTION="postgres" >> ".env"
+            echo TYPEORM_ENTITIES="/home/ubuntu/backend_app_dir/src/modules/domain/**/*.entity{.ts,.js}" >> ".env"
+            echo TYPEORM_MIGRATIONS="/home/ubuntu/backend_app_dir/dist/migrations/*{.ts,.js}" >> ".env"
+            echo TYPEORM_MIGRATIONS_DIR="/home/ubuntu/app/src/migrations" >> ".env"
             echo NODE_ENV="production" >> ".env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> “.env”
-            echo TYPEORM_PORT=$TYPEORM_PORT >> “.env”
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> “.env”
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> “.env”
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> “.env”
+            echo TYPEORM_HOST=$TYPEORM_HOST >> ".env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> ".env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ".env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
 
             pwd
             ls -al
