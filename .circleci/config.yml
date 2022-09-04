@@ -501,7 +501,7 @@ jobs:
             cat ~/project/OldWorkflowID.txt
             export OldWorkflowID=$(cat ~/project/OldWorkflowID.txt)
             echo OldWorkflowID: "${OldWorkflowID}"
-       - run:
+      - run:
           name: Remove old stacks and files
           command: |
             export OldWorkflowID=$(cat ~/project/OldWorkflowID.txt)
