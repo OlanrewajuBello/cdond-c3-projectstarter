@@ -511,7 +511,8 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-
+      - cloudfront-update:
+          requires: [smoke-test]
 
       # - notify:
       #     requires: [build-frontend, build-backend, test-frontend, test-backend, scan-frontend, scan-backend]
